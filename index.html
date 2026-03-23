@@ -492,7 +492,7 @@ body {
 
 // ═══ CONFIG ═══
 const LM_STUDIO_URL = '/v1/chat/completions';
-const LM_STUDIO_MODEL = 'qwen2.5-7b-instruct'; // Your loaded model in LM Studio
+const LM_STUDIO_MODEL = 'gemma-3-4b-it'; // Your loaded model in LM Studio
 const GEMINI_API_KEY = 'AIzaSyAQNdjTC58aff1I9G0M2Szoplx5q_YDfzc';
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
 
@@ -587,7 +587,13 @@ const POSTSALE_STEPS = {
   4: `YOUR TASK: Acknowledge their answer. Then ask: "Do you have a business email address? Something like info@yourbusiness.com or yourname@yourbusiness.com?" Only ask this one question.`,
   5: `YOUR TASK: Acknowledge their answer about email. Then ask: "Are you happy for our team to take care of getting everything connected and live for you, or do you have someone who usually looks after that kind of thing?" Only ask this one question.`,
   6: `YOUR TASK: Acknowledge their answer. Then ask: "Is there anything else you would like us to know, or any questions at all before we get cracking?" Only ask this one question.`,
-  7: `YOUR TASK: Summarise everything from the conversation in a friendly list. You MUST include ALL of these: their website address, where they bought it, their business email, and whether our team is handling the setup. Keep the language simple — say "website address" not "domain". Ask them to confirm everything looks right.`,
+  7: `YOUR TASK: You MUST write a summary list with bullet points. Start by saying "Here is a quick summary of what I have got:" then list these items:
+- Website address: [what they told you]
+- Bought from: [what they told you, or "not sure" if they were unsure]
+- Business email: [what they told you]
+- Setup: [who is handling it]
+Then ask: "Does everything look right?"
+Do NOT skip the summary. Do NOT just say goodbye.`,
   8: `YOUR TASK: Say something like "That is everything I need! Our team will get straight to work getting your website live. We will be in touch very soon. If you think of anything else, just email hello@realfastwebsite.com. So exciting — your website is nearly out there for the world to see!" Then add [SEND_SUMMARY] on its own line at the very end.`,
 };
 
@@ -888,7 +894,7 @@ async function sendMessage() {
     }
 
     // Use LM Studio (local model)
-    const apiMessages = [{ role: 'system', content: '/no_think\n' + systemContent }];
+    const apiMessages = [{ role: 'system', content: systemContent }];
     for (const m of messages) {
       apiMessages.push({ role: m.role, content: m.content });
     }
